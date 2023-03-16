@@ -9,12 +9,30 @@ public class Player : MonoBehaviour
     PlayerInputActions inputActions;
     Animator anim;
     Rigidbody rigid;
-
-    public float moveSpeed = 5;
+    /// <summary>
+    /// 이동속도
+    /// </summary>
+    public float moveSpeed = 5.0f;
+    /// <summary>
+    /// 회전속도
+    /// </summary>
     public float rotateSpeed = 180;
+    /// <summary>
+    /// 점프력
+    /// </summary>
+    public float jumpForce = 5.0f;
+    /// <summary>
+    /// 현재이동방향, -1 아래, +1 위
+    /// </summary>
     float moveDir = 0;
+    /// <summary>
+    /// 현재회전방향, -1(좌), +1(우)
+    /// </summary>
     float rotateDir = 0;
-    bool isMove = false;
+    /// <summary>
+    /// 현재점프여부 true면 점프 중, false면 점프 중이 아님
+    /// </summary>
+    bool isJumping= false;
 
     
 
@@ -27,20 +45,20 @@ public class Player : MonoBehaviour
     
     private void OnEnable()
     {
-        inputActions.Player.Enable();
-        inputActions.Player.Move.performed += OnMoveInput; //performed, ,canceled
-        inputActions.Player.Move.canceled += OnMoveInput;
+        inputActions.Player.Enable();                           // Player 액션맵 활성화
+        inputActions.Player.Move.performed += OnMoveInput;      // 액션들에게 함수 바인딩하기
+        inputActions.Player.Move.canceled += OnMoveInput;       
         inputActions.Player.Use.performed += OnUseInput;
         inputActions.Player.Jump.performed += OnJumpInput;
         
     }
     private void OnDisable()
     {
-        inputActions.Player.Jump.performed -= OnJumpInput;
+        inputActions.Player.Jump.performed -= OnJumpInput;      //액션에 연결된 함수들 바인딩해제
         inputActions.Player.Use.performed -= OnUseInput;
         inputActions.Player.Move.canceled -= OnMoveInput;
         inputActions.Player.Move.performed -= OnMoveInput;
-        inputActions.Player.Disable();
+        inputActions.Player.Disable();                          //Player 액션맵 활성화
     }
 
     private void Update() 
@@ -51,8 +69,8 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate() //일정시간 간격으로 업데이트 (물리적처리)
     {
-        Move();
-        Rotate();
+        Move();      //이동처리
+        Rotate();   //회전처리
 
     }
 
@@ -60,16 +78,37 @@ public class Player : MonoBehaviour
     //{
     //    
     //}
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))  //Ground와 충돌했을 때만
+        {
+            OnGrounded();                                 //착지함수 실행
+        }
+    }
 
 
-    private void OnMoveInput(InputAction.CallbackContext context)
+    private void OnMoveInput(InputAction.CallbackContext context)   //현재 키보드 입력상황 받기
     {
         Vector2 input = context.ReadValue<Vector2>();
         rotateDir = input.x; //좌:-1, 우:+1
         moveDir = input.y; //앞:+1, 뒤:-1
         //Debug.Log(input);
+        /*if(context.performed)
+        {
+            Debug.Log("Performed");
+        }
+
+        if(context.canceled)
+        {
+            Debug.Log("Canceled");
+        }*/
+
+        //context.performed : 액션에 연결된 키 중 하나라도 입력 중이면 true, 아니면 false;
+        //context.percanceled : 액션에 연결된 키가 모두 입력중이지 않으면 true, 아니면 false;
+        // 동시에 양방향 눌른다면? -1 1 일텐데, 왜 움직이는가?
+
         anim.SetBool("IsMove",true);
-       //context.canceled = anim.SetBool("IsMove", false);
+        anim.SetBool("IsMove", !context.canceled);                // 애니메이션 파라미터 변경(Idle,Move중 선택)
 
     }
 
@@ -86,17 +125,35 @@ public class Player : MonoBehaviour
         //rigid.AddToken();
         //rigid.MoveRotation();
         //Quaternion rotate = Quaternion.Euler(0, Time.fixedDeltaTime * rotateSpeed * rotateDir, 0);
-        Quaternion rotate = Quaternion.AngleAxis(Time.fixedDeltaTime * rotateSpeed * rotateDir, transform.up);
+        Quaternion rotate = Quaternion.AngleAxis(                               //특정 축을 기준으로 회전하는 쿼터니언을 만드는 함수
+            Time.fixedDeltaTime * rotateSpeed * rotateDir, transform.up);       //플레이어의 up방향을 기준으로 회전
         rigid.MoveRotation(rigid.rotation * rotate);
         anim.GetBool("IsMove");
     }
-    private void OnUseInput(InputAction.CallbackContext obj)
+    private void OnUseInput(InputAction.CallbackContext context)
     {
 
     }
-    private void OnJumpInput(InputAction.CallbackContext obj)
+    private void OnJumpInput(InputAction.CallbackContext context)
     {
 
+        Jump();
+    }
+    /// <summary>
+    /// 점프처리함수
+    /// </summary>
+    void Jump()
+    {
+        if(!isJumping)          // 점프중이 아닐 때만
+        {
+            rigid.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);  //월드의 Up방향으로 힘을 즉시 가하기
+            isJumping = true;
+        }
     }
 
+
+    private void OnGrounded()
+    {
+        isJumping = false;
+    }
 }
