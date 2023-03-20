@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    PlayerInputActions inputActions;
+    PlayerInputAction inputAction;
     Animator anim;
     Rigidbody rigid;
     /// <summary>
@@ -38,27 +38,27 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        inputActions = new PlayerInputActions();
+        inputAction = new PlayerInputAction();
         rigid = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
     }
     
     private void OnEnable()
     {
-        inputActions.Player.Enable();                           // Player 액션맵 활성화
-        inputActions.Player.Move.performed += OnMoveInput;      // 액션들에게 함수 바인딩하기
-        inputActions.Player.Move.canceled += OnMoveInput;       
-        inputActions.Player.Use.performed += OnUseInput;
-        inputActions.Player.Jump.performed += OnJumpInput;
+        inputAction.Player.Enable();                           // Player 액션맵 활성화
+        inputAction.Player.Move.performed += OnMoveInput;      // 액션들에게 함수 바인딩하기
+        inputAction.Player.Move.canceled += OnMoveInput;       
+        inputAction.Player.Use.performed += OnUseInput;
+        inputAction.Player.Jump.performed += OnJumpInput;
         
     }
     private void OnDisable()
     {
-        inputActions.Player.Jump.performed -= OnJumpInput;      //액션에 연결된 함수들 바인딩해제
-        inputActions.Player.Use.performed -= OnUseInput;
-        inputActions.Player.Move.canceled -= OnMoveInput;
-        inputActions.Player.Move.performed -= OnMoveInput;
-        inputActions.Player.Disable();                          //Player 액션맵 활성화
+        inputAction.Player.Jump.performed -= OnJumpInput;      //액션에 연결된 함수들 바인딩해제
+        inputAction.Player.Use.performed -= OnUseInput;
+        inputAction.Player.Move.canceled -= OnMoveInput;
+        inputAction.Player.Move.performed -= OnMoveInput;
+        inputAction.Player.Disable();                          //Player 액션맵 활성화
     }
 
     private void Update() 

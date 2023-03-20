@@ -8,6 +8,7 @@ public class Bullet : PoolObject
     /// 시작이동속도
     /// </summary>
     public float initialSpeed = 30.0f;
+
     Rigidbody rigid;
 
     private void Awake()
@@ -20,6 +21,7 @@ public class Bullet : PoolObject
         rigid.velocity = transform.forward* initialSpeed ;    //초기운동량 설정
         //Debug.Log(rigid.velocity);
         StartCoroutine(LifeOver(10.0f));                       //비활성화
+        rigid.angularVelocity = Vector3.zero;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -27,5 +29,6 @@ public class Bullet : PoolObject
         StartCoroutine(LifeOver(2.0f));                 //2초후 비활성화
     }
 
+   
 
 }

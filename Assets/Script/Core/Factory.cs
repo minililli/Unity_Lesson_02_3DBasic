@@ -31,4 +31,5 @@ public class Factory : Singleton<Factory>
     /// <paramname = "parentT"> 기준 트랜스폼(이 트랜스폼의 위치, 회전, 스케일사용)</param>
     /// <returns></returns>
     public Bullet GetBullet(Transform parentT = null) => bulletPool?.GetObject(parentT);
+    
 }

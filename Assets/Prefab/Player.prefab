@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3287154027451562296}
   - component: {fileID: 3287154027451562297}
   - component: {fileID: 3287154027451562298}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: L-Eyebrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 3287154027506758161}
   - component: {fileID: 3287154027506758167}
   - component: {fileID: 3287154027506758160}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: R-Arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -190,7 +190,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3287154027596208407}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: L-Eyebone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,7 +205,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3287154027596208400}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5, y: -2, z: -12}
+  m_LocalPosition: {x: -0.1, y: 2.6, z: -12}
   m_LocalScale: {x: 4.7619042, y: 28.571428, z: 28.571428}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 3287154027598976709}
   - component: {fileID: 3287154027598976715}
   - component: {fileID: 3287154027598976708}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -313,7 +313,7 @@ GameObject:
   - component: {fileID: 3287154027674024604}
   - component: {fileID: 3287154027674024605}
   - component: {fileID: 3287154027674024606}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Lip1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -407,7 +407,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3287154027815192938}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: L-Shoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 3287154027955552356}
   - component: {fileID: 3287154027955552362}
   - component: {fileID: 3287154027955552363}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: L-Arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -524,7 +524,7 @@ GameObject:
   - component: {fileID: 3287154028343825407}
   - component: {fileID: 3287154028343825405}
   - component: {fileID: 3287154028343825406}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: L-Leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -608,9 +608,10 @@ GameObject:
   - component: {fileID: 3287154028361901830}
   - component: {fileID: 3287154028361901831}
   - component: {fileID: -3486227104509068305}
-  m_Layer: 0
+  - component: {fileID: 1715251620}
+  m_Layer: 7
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -677,7 +678,7 @@ Animator:
   m_GameObject: {fileID: 3287154028361901824}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: eaefc62029039d4498d394556a926b0d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -687,6 +688,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1715251620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3287154028361901824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd0f313197d54ef438baf8b96439fe62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  rotateSpeed: 180
+  jumpForce: 5
 --- !u!1 &3287154028786231050
 GameObject:
   m_ObjectHideFlags: 0
@@ -699,7 +715,7 @@ GameObject:
   - component: {fileID: 3287154028786231054}
   - component: {fileID: 3287154028786231055}
   - component: {fileID: 3287154028786231048}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: R-Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -794,7 +810,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3287154029081291972}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: R-Shoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -829,7 +845,7 @@ GameObject:
   - component: {fileID: 3287154029081339446}
   - component: {fileID: 3287154029081339447}
   - component: {fileID: 3287154029081339440}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Lip2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -927,7 +943,7 @@ GameObject:
   - component: {fileID: 3287154029143379893}
   - component: {fileID: 3287154029143379894}
   - component: {fileID: 3287154029143379895}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Nose
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1024,7 +1040,7 @@ GameObject:
   - component: {fileID: 3287154029212741797}
   - component: {fileID: 3287154029212741803}
   - component: {fileID: 3287154029212741796}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: R-Leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1108,7 +1124,7 @@ GameObject:
   - component: {fileID: 3287154029276504791}
   - component: {fileID: 3287154029276504784}
   - component: {fileID: 3287154029276504785}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: R-Eyebrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1205,7 +1221,7 @@ GameObject:
   - component: {fileID: 3287154029417435819}
   - component: {fileID: 3287154029417435812}
   - component: {fileID: 3287154029417435813}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: L-Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1302,7 +1318,7 @@ GameObject:
   - component: {fileID: 3287154029461873406}
   - component: {fileID: 3287154029461873404}
   - component: {fileID: 3287154029461873405}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1383,7 +1399,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3287154029487237789}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: R-HipJoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1415,7 +1431,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3287154029547989804}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: R-Eyebone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1447,7 +1463,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3287154029571436313}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: L-HipJoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

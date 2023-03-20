@@ -6,15 +6,17 @@ TagManager:
   tags:
   - CinemachineTarget
   - Ground
+  - Bullet
+  - Wall
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Wall
   - Water
   - UI
-  - 
-  - 
+  - Bullet
+  - Player
   - 
   - 
   - 
