@@ -7,7 +7,13 @@ public class DoorAuto : DoorBase
 
     private void OnTriggerEnter(Collider other)
     {
-        OnOpen();
+        if (other != null)
+        {
+            if (other.CompareTag("Player"))
+            {
+                OnOpen();
+            }
+        }
     }
 
     private void OnTriggerExit(Collider other)
