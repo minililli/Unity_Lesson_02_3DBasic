@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -12,7 +13,8 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 이동속도
     /// </summary>
-    public float moveSpeed = 5.0f;
+    public float currentmoveSpeed;
+    float moveSpeed = 5.0f;
     /// <summary>
     /// 회전속도
     /// </summary>
@@ -33,8 +35,31 @@ public class Player : MonoBehaviour
     /// 현재점프여부 true면 점프 중, false면 점프 중이 아님
     /// </summary>
     bool isJumping= false;
-
+    /// <summary>
+    /// 플레이어가 사망했음을 알리는 델리게이트
+    /// </summary>
+    public Action onDie;
+    public Action<float> onLifeTimeChange;
     
+    bool isAlive = true;
+
+    public float lifeTimeMax = 3.0f;
+    float lifeTime = 3.0f;
+
+    public float LifeTime
+    {
+        get => LifeTime;
+        private set
+        {
+            lifeTime = value;
+            onLifeTimeChange?.Invoke(lifeTime/lifeTimeMax);
+            if (lifeTime <= 0.0f)
+            {
+                Die();
+            }
+        }
+    }
+
 
     private void Awake()
     {
@@ -65,11 +90,11 @@ public class Player : MonoBehaviour
         inputAction.Player.Disable();                          //Player 액션맵 활성화
     }
 
-    private void Update() 
+    /*private void Update() 
     {
 
     }
-
+*/
 
     private void FixedUpdate() //일정시간 간격으로 업데이트 (물리적처리)
     {
@@ -88,8 +113,22 @@ public class Player : MonoBehaviour
         {
             OnGrounded();                                 //착지함수 실행
         }
-    }
+        else if (collision.gameObject.CompareTag("Platform"))
+        {
+            Platform platform = collision.gameObject.GetComponent<Platform>();
+            platform.onMove += OnRideMovingObject;
+        }
+        OnGrounded();
 
+    }
+   private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            Platform platform = collision.gameObject.GetComponent<Platform>();
+            platform.onMove -= OnRideMovingObject;
+        }
+    }
 
     private void OnMoveInput(InputAction.CallbackContext context)   //현재 키보드 입력상황 받기
     {
@@ -165,5 +204,43 @@ public class Player : MonoBehaviour
     private void UseObject(IUseableObject obj)
     {
         obj.Used();
+    }
+
+    public void Die()
+    {
+        if (isAlive)
+        {
+            anim.SetTrigger("Die");
+
+            inputAction.Player.Disable();
+            //pitch와 roll회전이 막혀있던 것을 풀기
+            rigid.constraints = RigidbodyConstraints.None;
+
+            //머리 위치에 플레이어의 뒷방향으로 0.5만큼의 힘을 가하기
+            Transform head = transform.GetChild(0);
+            rigid.AddForceAtPosition(-transform.forward * 0.5f, head.position);
+
+            rigid.AddTorque(transform.up * 1.0f, ForceMode.Impulse);
+
+            //델리게이트로 알림보내기
+            onDie?.Invoke();
+            isAlive = false;
+        }
+    
+    }
+
+    public void SetHalfSpeed()
+    {
+        currentmoveSpeed = moveSpeed * 0.5f;
+    }
+
+    public void ResetMoveSpeed()
+    {
+        currentmoveSpeed = moveSpeed;
+    }
+
+    private void OnRideMovingObject(Vector3 delta)
+    {
+        rigid.MovePosition(rigid.position + delta);
     }
 }

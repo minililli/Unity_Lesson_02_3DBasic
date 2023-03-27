@@ -19,6 +19,8 @@ public class DoorManual : DoorBase, IUseableObject
 
     bool getkey = false;
 
+    public bool isDirectUse => true;
+
     protected override void Awake()
     {
         base.Awake();

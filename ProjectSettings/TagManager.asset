@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - Bullet
   - Wall
+  - Platform
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - Bullet
   - Player
   - Door
-  - 
+  - InteractiveObject
   - 
   - 
   - 

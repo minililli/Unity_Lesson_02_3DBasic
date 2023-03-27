@@ -4,5 +4,9 @@ using UnityEngine;
 
 public interface IUseableObject
 {
+    bool isDirectUse 
+    {
+        get;
+    }
     void Used();
 }

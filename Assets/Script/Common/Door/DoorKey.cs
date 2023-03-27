@@ -37,6 +37,9 @@ public class DoorKey : MonoBehaviour, IUseableObject
     }
 
     public Action<bool> GetKey;
+
+    public bool isDirectUse => true;
+
     public void Used()
     {
         Destroy(this.gameObject);
