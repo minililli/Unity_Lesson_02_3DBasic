@@ -200,7 +200,10 @@ public class Player : MonoBehaviour
     {
         isJumping = false;
     }
-    //아이템 사용한다는 알람이 오면 실행되는 함수
+    /// <summary>
+    /// 아이템 사용한다는 알람이 오면 실행되는 함수
+    /// </summary>
+    /// <param name="obj">사용할 오브젝트</param>
     private void UseObject(IUseableObject obj)
     {
         obj.Used();
@@ -217,7 +220,7 @@ public class Player : MonoBehaviour
             rigid.constraints = RigidbodyConstraints.None;
 
             //머리 위치에 플레이어의 뒷방향으로 0.5만큼의 힘을 가하기
-            Transform head = transform.GetChild(0);
+            Transform head = transform.GetChild(1);
             rigid.AddForceAtPosition(-transform.forward * 0.5f, head.position);
 
             rigid.AddTorque(transform.up * 1.0f, ForceMode.Impulse);

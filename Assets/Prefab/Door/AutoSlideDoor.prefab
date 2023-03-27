@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4438963570365143824}
   m_Layer: 8
-  m_Name: Auto_Slide
+  m_Name: Slide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -247,7 +247,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7277574972742855839, guid: 37cecec6dea24ed4c9486c3c544ffb46, type: 3}
       propertyPath: m_VersionIndex
-      value: 2278
+      value: 2299
       objectReference: {fileID: 0}
     - target: {fileID: 7389475145005579771, guid: 37cecec6dea24ed4c9486c3c544ffb46, type: 3}
       propertyPath: m_RootOrder

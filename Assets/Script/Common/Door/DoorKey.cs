@@ -4,47 +4,55 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //[RequireComponent(typeof(DoorManual))]
-public class DoorKey : MonoBehaviour, IUseableObject 
+public class DoorKey : MonoBehaviour
 {
-    DoorManual ManualDoor;
-    Player player;
-    Animator anim;
+    public DoorBase targetDoor;
+    public float rotateSpeed = 360.0f;
 
-    bool getKey = false;
-   
+    Transform keyModel;
+
+    public bool isDirectUse => false;
+
     void Awake()
     {
-        anim = GetComponent<Animator>();
-        player = FindObjectOfType<Player>();
+        keyModel = transform.GetChild(0);
     }
 
-    private void Start()
+    void Update()
     {
-        ManualDoor = FindObjectOfType<DoorManual>();
+        keyModel.Rotate(Time.deltaTime * rotateSpeed * Vector3.up);
     }
-
+  
     private void OnTriggerEnter(Collider other)
     {
-        if (ManualDoor != null)
-        {
-            if(other.CompareTag("Player"))
-            {
-                Debug.Log("들어옴");
-                Used();
-            }
+        OnConsume();
+    }
 
+    private void OnValidate()
+    {
+        //Debug.Log("OnValidate");
+        if (targetDoor != null)
+        {
+            // target이 자동문이어야 한다.
+            // DoorAuto이면 그대로
+            // DoorAuto가 아니면 target은 null.
+
+            targetDoor = targetDoor as DoorAuto;
+
+            //target = target.GetComponent<DoorAuto>(); // 위와 같은 기능의 코드
+
+            //bool isDoorAuto = target is DoorAuto;     // 위와 같은 기능의 코드
+            //if(!isDoorAuto)
+            //{
+            //    target = null;
+            //}
         }
     }
 
-    public Action<bool> GetKey;
-
-    public bool isDirectUse => true;
-
-    public void Used()
+    protected virtual void OnConsume()
     {
+        targetDoor.Open();
         Destroy(this.gameObject);
-        getKey = true;
-        GetKey?.Invoke(getKey);
     }
 
 }

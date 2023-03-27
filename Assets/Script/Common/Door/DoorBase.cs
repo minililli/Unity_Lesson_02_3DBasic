@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 
 public class DoorBase : MonoBehaviour
@@ -9,15 +8,26 @@ public class DoorBase : MonoBehaviour
 
     protected virtual void Awake()
     {
-        Animator anim = GetComponent<Animator>();
+        anim = GetComponent<Animator>();
     }
+
     protected virtual void OnOpen()
     {
-        anim.SetBool("IsOpen", true);
     }
 
     protected virtual void OnClose()
     {
+    }
+
+    public void Open()
+    {
+        anim.SetBool("IsOpen", true);
+        OnOpen();
+    }
+
+    public void Close()
+    {
+        OnClose();
         anim.SetBool("IsOpen", false);
     }
 }
