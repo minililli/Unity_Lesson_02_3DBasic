@@ -10,11 +10,12 @@ public class Player : MonoBehaviour
     PlayerInputAction inputAction;
     Animator anim;
     Rigidbody rigid;
+    public Rigidbody Rigid => rigid; //get만 있는 프로퍼티
     /// <summary>
     /// 이동속도
     /// </summary>
-    public float currentmoveSpeed;
-    float moveSpeed = 5.0f;
+    public float currentMoveSpeed;
+    public float moveSpeed = 5.0f;
     /// <summary>
     /// 회전속도
     /// </summary>
@@ -48,7 +49,7 @@ public class Player : MonoBehaviour
 
     public float LifeTime
     {
-        get => LifeTime;
+        get => lifeTime;
         private set
         {
             lifeTime = value;
@@ -79,7 +80,10 @@ public class Player : MonoBehaviour
         inputAction.Player.Move.canceled += OnMoveInput;       
         inputAction.Player.Use.performed += OnUseInput;
         inputAction.Player.Jump.performed += OnJumpInput;
-        
+
+        isAlive = true;
+        LifeTime = lifeTimeMax;
+        ResetMoveSpeed();
     }
     private void OnDisable()
     {
@@ -90,11 +94,10 @@ public class Player : MonoBehaviour
         inputAction.Player.Disable();                          //Player 액션맵 활성화
     }
 
-    /*private void Update() 
+    private void Update() // 다른 모든 업데이트가 실행되고 나서 실행되는 업데이트 (카메라처리)
     {
-
+        LifeTime -= Time.deltaTime;     
     }
-*/
 
     private void FixedUpdate() //일정시간 간격으로 업데이트 (물리적처리)
     {
@@ -103,10 +106,6 @@ public class Player : MonoBehaviour
 
     }
 
-    //private void LateUpdate() // 다른 모든 업데이트가 실행되고 나서 실행되는 업데이트 (카메라처리)
-    //{
-    //    
-    //}
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))  //Ground와 충돌했을 때만
@@ -161,9 +160,9 @@ public class Player : MonoBehaviour
     }
     void Move()
     {
-        rigid.MovePosition(rigid.position + Time.fixedDeltaTime * moveSpeed * moveDir * transform.forward);
-        
-        anim.GetBool("IsMove");
+        rigid.MovePosition(rigid.position + Time.fixedDeltaTime * currentMoveSpeed * moveDir * transform.forward);
+
+        anim.SetBool("IsMove", true);
     }
 
     void Rotate()
@@ -234,16 +233,21 @@ public class Player : MonoBehaviour
 
     public void SetHalfSpeed()
     {
-        currentmoveSpeed = moveSpeed * 0.5f;
+        currentMoveSpeed = moveSpeed * 0.5f;
     }
 
     public void ResetMoveSpeed()
     {
-        currentmoveSpeed = moveSpeed;
+        currentMoveSpeed = moveSpeed;
     }
 
     private void OnRideMovingObject(Vector3 delta)
     {
         rigid.MovePosition(rigid.position + delta);
+    }
+
+    public void SetForceJumpMode()
+    {
+        isJumping = true;
     }
 }
