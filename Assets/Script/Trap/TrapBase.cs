@@ -12,6 +12,8 @@ public class TrapBase : MonoBehaviour
         }
     }
 
+
+
     private void TrapActivate(GameObject target)
     {
         OnTrapActivate(target);

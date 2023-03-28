@@ -24,6 +24,29 @@ public class Player : MonoBehaviour
     /// 점프력
     /// </summary>
     public float jumpForce = 5.0f;
+
+    public float jumpCoolTime = 5.0f;
+    public float jumpCoolTimeMax = 5.0f;
+
+    private float JumpCoolTime
+    {
+        get => jumpCoolTime;
+        set
+        {
+            jumpCoolTime = value;
+            if(jumpCoolTime < 0)
+            {
+                jumpCoolTime = 0.0f;
+            }
+            onJumpCoolTimeChange?.Invoke(jumpCoolTime/jumpCoolTimeMax);
+                 
+        }
+    }
+           
+
+    Action<float> onJumpCoolTimeChange;
+    //true면 점프쿨타임 끝나서 점프 가능함, false 면 점프 쿨타임중
+    private bool IsJumpCoolEnd => jumpCoolTime <= 0;
     /// <summary>
     /// 현재이동방향, -1 아래, +1 위
     /// </summary>
@@ -72,7 +95,18 @@ public class Player : MonoBehaviour
         ItemUseAlarm alarm = GetComponentInChildren<ItemUseAlarm>();
         alarm.onUseableItemUsed += UseObject;
     }
+
+    private void Start()
+    {
+       VirtualStick stick = FindObjectOfType<VirtualStick>();
+       //stick.onMoveInput += (input) => SetInput(input, input != Vector2.zero);
+
+        VirtualButton button = FindObjectOfType<VirtualButton>();
+        button.onClick += Jump;
+        onJumpCoolTimeChange?.Invoke(jumpCoolTime / jumpCoolTimeMax);
     
+    }
+
     private void OnEnable()
     {
         inputAction.Player.Enable();                           // Player 액션맵 활성화
@@ -83,8 +117,10 @@ public class Player : MonoBehaviour
 
         isAlive = true;
         LifeTime = lifeTimeMax;
+        JumpCoolTime = 0.0f;
         ResetMoveSpeed();
     }
+ 
     private void OnDisable()
     {
         inputAction.Player.Jump.performed -= OnJumpInput;      //액션에 연결된 함수들 바인딩해제
@@ -93,7 +129,6 @@ public class Player : MonoBehaviour
         inputAction.Player.Move.performed -= OnMoveInput;
         inputAction.Player.Disable();                          //Player 액션맵 활성화
     }
-
     private void Update() // 다른 모든 업데이트가 실행되고 나서 실행되는 업데이트 (카메라처리)
     {
         LifeTime -= Time.deltaTime;     
@@ -114,17 +149,24 @@ public class Player : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Platform"))
         {
-            Platform platform = collision.gameObject.GetComponent<Platform>();
+            OnGrounded();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if ((other.gameObject.CompareTag("Platform")))
+        {
+            Platform platform = other.gameObject.GetComponent<Platform>();
             platform.onMove += OnRideMovingObject;
         }
-        OnGrounded();
-
     }
-   private void OnCollisionExit(Collision collision)
+    
+    private void OnTriggerExit(Collider other)
     {
-        if (collision.gameObject.CompareTag("Platform"))
+        if (other.gameObject.CompareTag("Platform"))
         {
-            Platform platform = collision.gameObject.GetComponent<Platform>();
+            Platform platform = other.gameObject.GetComponent<Platform>();
             platform.onMove -= OnRideMovingObject;
         }
     }
@@ -187,8 +229,9 @@ public class Player : MonoBehaviour
     /// </summary>
     void Jump()
     {
-        if(!isJumping)          // 점프중이 아닐 때만
+        if(!isJumping && IsJumpCoolEnd)          // 점프중이 아니고 쿨타임이 다 되었을 때만 가능
         {
+            JumpCoolTime = jumpCoolTimeMax;
             rigid.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);  //월드의 Up방향으로 힘을 즉시 가하기
             isJumping = true;
         }
