@@ -20,6 +20,7 @@ public class VirtualButton : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         onClick?.Invoke();
+     
     }
 
     /// <summary>

@@ -1,5 +1,5 @@
 {
-    "name": "PlayerInputActions",
+    "name": "PlayerInputAction",
     "maps": [
         {
             "name": "Player",
@@ -170,7 +170,7 @@
                     "path": "<Keyboard>/1",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "KM",
                     "action": "Test1",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -181,7 +181,7 @@
                     "path": "<Keyboard>/2",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "KM",
                     "action": "Test2",
                     "isComposite": false,
                     "isPartOfComposite": false

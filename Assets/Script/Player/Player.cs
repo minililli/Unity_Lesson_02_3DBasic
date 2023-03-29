@@ -37,9 +37,10 @@ public class Player : MonoBehaviour
             if(jumpCoolTime < 0)
             {
                 jumpCoolTime = 0.0f;
+                isJumping = false;
             }
-            onJumpCoolTimeChange?.Invoke(jumpCoolTime/jumpCoolTimeMax);
                  
+            onJumpCoolTimeChange?.Invoke(jumpCoolTime/jumpCoolTimeMax);
         }
     }
            
@@ -97,14 +98,15 @@ public class Player : MonoBehaviour
     }
 
     private void Start()
-    {
+    {   
+        //가상스틱연결
        VirtualStick stick = FindObjectOfType<VirtualStick>();
-       //stick.onMoveInput += (input) => SetInput(input, input != Vector2.zero);
+       stick.onMoveInput += (input) => SetInput(input, input != Vector2.zero); // 스틱 입력이 있으면 이동 처리    
 
+        //가상 버튼 연결
         VirtualButton button = FindObjectOfType<VirtualButton>();
-        button.onClick += Jump;
-        onJumpCoolTimeChange?.Invoke(jumpCoolTime / jumpCoolTimeMax);
-    
+        button.onClick += Jump;                            //가상 버튼이 눌려지면 점프
+        onJumpCoolTimeChange += button.RefreshCoolTime;   //점프 쿨타임이 변하면 버튼의 쿨타임 표시 변경
     }
 
     private void OnEnable()
@@ -115,9 +117,9 @@ public class Player : MonoBehaviour
         inputAction.Player.Use.performed += OnUseInput;
         inputAction.Player.Jump.performed += OnJumpInput;
 
-        isAlive = true;
-        LifeTime = lifeTimeMax;
-        JumpCoolTime = 0.0f;
+        isAlive = true;                
+        LifeTime = lifeTimeMax; 
+        JumpCoolTime = 0.0f;            //점프 쿨타임 초기화
         ResetMoveSpeed();
     }
  
@@ -131,7 +133,8 @@ public class Player : MonoBehaviour
     }
     private void Update() // 다른 모든 업데이트가 실행되고 나서 실행되는 업데이트 (카메라처리)
     {
-        LifeTime -= Time.deltaTime;     
+        LifeTime -= Time.deltaTime;
+        JumpCoolTime -= Time.deltaTime;
     }
 
     private void FixedUpdate() //일정시간 간격으로 업데이트 (물리적처리)
@@ -174,26 +177,17 @@ public class Player : MonoBehaviour
     private void OnMoveInput(InputAction.CallbackContext context)   //현재 키보드 입력상황 받기
     {
         Vector2 input = context.ReadValue<Vector2>();
+        //context.performed : 액션에 연결된 키 중 하나라도 입력중이면 true, 아니면 false;
+        //context.canceled : 액션에 연결된 키가 모두 입력 중이지 않으면 true, 아니면 false;
+        SetInput(input, !context.canceled); 
+
+    }
+
+    void SetInput(Vector2 input, bool isMove)
+    {
         rotateDir = input.x; //좌:-1, 우:+1
-        moveDir = input.y; //앞:+1, 뒤:-1
-        //Debug.Log(input);
-        /*if(context.performed)
-        {
-            Debug.Log("Performed");
-        }
-
-        if(context.canceled)
-        {
-            Debug.Log("Canceled");
-        }*/
-
-        //context.performed : 액션에 연결된 키 중 하나라도 입력 중이면 true, 아니면 false;
-        //context.percanceled : 액션에 연결된 키가 모두 입력중이지 않으면 true, 아니면 false;
-        // 동시에 양방향 눌른다면? -1 1 일텐데, 왜 움직이는가?
-
-        anim.SetBool("IsMove",true);
-        anim.SetBool("IsMove", !context.canceled);                // 애니메이션 파라미터 변경(Idle,Move중 선택)
-
+        moveDir = input.y; //앞:+1, 뒤:-1s
+        anim.SetBool("IsMove", isMove);
     }
 
     void OnUseInput(InputAction.CallbackContext context)
@@ -203,8 +197,6 @@ public class Player : MonoBehaviour
     void Move()
     {
         rigid.MovePosition(rigid.position + Time.fixedDeltaTime * currentMoveSpeed * moveDir * transform.forward);
-
-        anim.SetBool("IsMove", true);
     }
 
     void Rotate()
@@ -214,9 +206,8 @@ public class Player : MonoBehaviour
         //rigid.MoveRotation();
         //Quaternion rotate = Quaternion.Euler(0, Time.fixedDeltaTime * rotateSpeed * rotateDir, 0);
         Quaternion rotate = Quaternion.AngleAxis(                               //특정 축을 기준으로 회전하는 쿼터니언을 만드는 함수
-            Time.fixedDeltaTime * rotateSpeed * rotateDir, transform.up);       //플레이어의 up방향을 기준으로 회전
+         Time.fixedDeltaTime * rotateSpeed * rotateDir, transform.up);       //플레이어의 up방향을 기준으로 회전
         rigid.MoveRotation(rigid.rotation * rotate);
-        anim.GetBool("IsMove");
     }
   
     private void OnJumpInput(InputAction.CallbackContext context)
@@ -241,6 +232,7 @@ public class Player : MonoBehaviour
     private void OnGrounded()
     {
         isJumping = false;
+       
     }
     /// <summary>
     /// 아이템 사용한다는 알람이 오면 실행되는 함수
@@ -248,7 +240,10 @@ public class Player : MonoBehaviour
     /// <param name="obj">사용할 오브젝트</param>
     private void UseObject(IUseableObject obj)
     {
-        obj.Used();
+        if (obj.IsDirectUse)
+        {
+            obj.Used(); // 사용
+        }
     }
 
     public void Die()
@@ -273,6 +268,10 @@ public class Player : MonoBehaviour
         }
     
     }
+    public void SetForceJumpMode()
+    {
+        isJumping = true;
+    }
 
     public void SetHalfSpeed()
     {
@@ -284,13 +283,9 @@ public class Player : MonoBehaviour
         currentMoveSpeed = moveSpeed;
     }
 
+
     private void OnRideMovingObject(Vector3 delta)
     {
         rigid.MovePosition(rigid.position + delta);
-    }
-
-    public void SetForceJumpMode()
-    {
-        isJumping = true;
     }
 }

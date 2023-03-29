@@ -14,7 +14,7 @@ public class Platform : WayPointUser
         base.SetTarget(target);
         Vector3 lookposition = target.position;
         lookposition.y = transform.position.y;
-        transform.LookAt(lookposition);
+        //transform.LookAt(lookposition);
     }
   
 }

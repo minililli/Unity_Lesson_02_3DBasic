@@ -352,6 +352,10 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1715251620, guid: 0ea8adae2995e5746a6946ea2822b608, type: 3}
+      propertyPath: lifeTimeMax
+      value: 100000
+      objectReference: {fileID: 0}
     - target: {fileID: 3287154028361901824, guid: 0ea8adae2995e5746a6946ea2822b608, type: 3}
       propertyPath: m_Name
       value: Player

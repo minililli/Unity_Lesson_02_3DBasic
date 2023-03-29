@@ -192,7 +192,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""KM"",
                     ""action"": ""Test1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -203,7 +203,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/2"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""KM"",
                     ""action"": ""Test2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

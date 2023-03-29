@@ -27,6 +27,7 @@ public class VirtualStick : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoi
 
     void Awake()
     {
+        
         containerRect = transform as RectTransform;
         Transform child = transform.GetChild(0);
         handleRect = child as RectTransform;        //handleRect = child.GetComponent<RectTransform>(); 보다는 child as RectTransform이 나은듯.
@@ -38,15 +39,22 @@ public class VirtualStick : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoi
     /// <param name="eventData"></param>
     public void OnDrag(PointerEventData eventData)
     {
-        //containerRect의 피봇에서 얼만큼 이동했는지가 position에 들어간다.
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(containerRect, eventData.position,
+
+        if ( this
+            !=null) 
+        {
+            //containerRect의 피봇에서 얼만큼 이동했는지가 position에 들어간다.
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(containerRect, eventData.position,
         eventData.pressEventCamera, out Vector2 position);
 
-        position = Vector2.ClampMagnitude(position, stickRange);        //움직임이 stickRange를 넘지 않도록 클램프
 
-        handleRect.anchoredPosition = position;
+            //clamp 최소값, 최댓값 사이 값.
+            position = Vector2.ClampMagnitude(position, stickRange);        //움직임이 stickRange를 넘지 않도록 클램프
 
-        InputUpdate(position);
+            handleRect.anchoredPosition = position;
+
+            InputUpdate(position);
+        }
     }
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -58,7 +66,7 @@ public class VirtualStick : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoi
         InputUpdate(Vector2.zero);  ///마우스를 땠을 떄 핸들 중립 위치로 초기화
     }
 /// <summary>
-/// 스틱의 움직ㅇ미을 입력으로 변경해서 핸들을 움직이고 신호를 보내는 함수/
+/// 스틱의 움직임을 입력으로 변경해서 핸들을 움직이고 신호를 보내는 함수/
 /// </summary>
 /// <param name="pos">움직인 양</param>
     void InputUpdate(Vector2 pos)

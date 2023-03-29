@@ -19,10 +19,10 @@ public class TrapSpike : TrapBase
     protected override void OnTrapActivate(GameObject target)
     {
         base.OnTrapActivate(target);
-        anim.SetBool("Pop", true);
+        StartCoroutine(Pop());
     }
 
-  /*  private void OnEnable()
+    private void OnEnable()
     {
         waitTime = new WaitForSeconds(2);
     }
@@ -44,5 +44,5 @@ public class TrapSpike : TrapBase
     {
         yield return waitTime;
         anim.SetBool("Pop",true);
-    }*/
+    }
 }

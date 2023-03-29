@@ -16,7 +16,7 @@ public class Blade : WayPointUser
         bladeMesh = transform.GetChild(0);
     }
 
-    private void Start()
+    protected override void Start()
     {
         SetTarget(targetWayPoints.CurrentWayPoint);
         

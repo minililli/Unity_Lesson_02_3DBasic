@@ -31,7 +31,7 @@ public class PlatformManual : Platform, IUseableObject
     /// <summary>
     /// Interface의 직접/간접 사용여부 - 간접사용임
     /// </summary>
-    public bool isDirectUse => false;
+    public bool IsDirectUse => false;
 
     /// <summary>
     /// isMoving이 true이면 Move() 실행

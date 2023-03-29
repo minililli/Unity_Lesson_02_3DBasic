@@ -19,7 +19,7 @@ public class UseSwitch : MonoBehaviour, IUseableObject
     
     Animator anim;
 
-    public bool isDirectUse => true;
+    public bool IsDirectUse => true;
 
     protected void Awake()
     {

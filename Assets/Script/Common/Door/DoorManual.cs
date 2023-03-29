@@ -16,7 +16,7 @@ public class DoorManual : DoorBase, IUseableObject
     WaitForSeconds closeWait;
 
     TextMeshPro text;
-    public bool isDirectUse => true;
+    public bool IsDirectUse => true;
 
     protected override void Awake()
     {
